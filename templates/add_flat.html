@@ -1,0 +1,20 @@
+{% extends 'flat_form.html' %}
+
+{% block title %}
+Add new flat
+{% endblock %}
+
+{% block text_center %}
+<h2>Adding the new flat</h2>
+{% endblock %}
+
+{% block price_area %}
+<div class="list-group-item col-12">
+    <label for="price" class="gap-3">Enter the price of the flat:</label>
+    <input type="number" min="0" name="price" id="price" class="list-group-item col-12" placeholder="Price in PLN">
+</div>
+{% endblock %}
+
+{% block button %}
+<button type="submit" class="w-100 btn btn-primary btn-lg">Add new flat</button>
+{% endblock %}

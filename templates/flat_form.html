@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block text_center %}{% endblock %}
+
+{% block body %}
+  <div class="list-group">
+  <form method="post">
+    <div class="list-group-item col-12">
+    <label for="flat-district">Choose the city district where the flat is located:</label>
+    <select class="list-group-item form-select" aria-label="Default select example" id="flat-district" name="flat-district">
+      <option value="">--Please choose an option--</option>
+      {% for district in districts %}
+      <option value={{district[0]}}>{{district[0]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="street">Enter the street of the flat:</label>
+    <input type="text" name="street" id="street" class="list-group-item col-12" placeholder="Enter the street">
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="area" class="gap-3">Enter the area of the flat:</label>
+    <input type="number" min="0" name="area" id="area" class="list-group-item col-12" placeholder="Area in sq.meters">
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="room" class="gap-3">Enter amount of rooms in the flat:</label>
+    <input type="number" min="1" name="room" id="room" class="list-group-item col-12" placeholder="Amount of rooms">
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="flat-renovation" class="gap-3">Choose renovation level of the flat:</label>
+    <select class="list-group-item form-select" aria-label="Default select example" id="flat-renovation" name="flat-renovation">
+      <option value="">--Please choose an option--</option>
+      {% for renovation_level in renovation_levels %}
+      <option value={{renovation_level[0]}}>{{renovation_dict[renovation_level[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="floor">On which floor is the flat:</label>
+    <select id="floor" name="floor" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for floor in floors %}
+      <option value={{floor[0]}}>{{floor_dict[floor[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="market-kind">Choose the kind of the market where flat is for sale:</label>
+    <select id="market-kind" name="market-kind" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for market in market_kind %}
+      <option value={{market[0]}}>{{market_dict[market[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="elevator">There is an elevator in building:</label>
+    <select id="elevator" name="elevator" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for option in elevator %}
+      <option value={{option[0]}}>{{binary_dict[option[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="balcony">There is a balcony in the flat:</label>
+    <select id="balcony" name="balcony" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for option in balcony %}
+      <option value={{option[0]}}>{{binary_dict[option[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="terrace">There is a terrace in the flat:</label>
+    <select id="terrace" name="terrace" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for option in terrace %}
+      <option value={{option[0]}}>{{binary_dict[option[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="garden">There is a garden with the flat:</label>
+    <select id="garden" name="garden" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for option in garden %}
+      <option value={{option[0]}}>{{binary_dict[option[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="central-heating">There is a central heating in building:</label>
+    <select id="central-heating" name="central-heating" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for option in heating_kind %}
+      <option value={{option[0]}}>{{binary_dict[option[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="seller">Who sells the property:</label>
+    <select id="seller" name="seller" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for seller in sellers %}
+      <option value={{seller[0]}}>{{seller_dict[seller[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="is-blok">The flat is located in block type building (blok):</label>
+    <select id="is-blok" name="is-blok" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for b in blok %}
+      <option value={{b[0]}}>{{binary_dict[b[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    <div class="list-group-item col-12">
+    <label for="is-parking">There is a parking place to the apartment:</label>
+    <select id="is-parking" name="is-parking" class="list-group-item form-select" aria-label="Default select example">
+      <option value="">--Please choose an option--</option>
+      {% for p in parking %}
+      <option value={{p[0]}}>{{binary_dict[p[0]]}}</option>
+      {% endfor %}
+    </select>
+    </div>
+
+    {% block price_area %}{% endblock %}
+
+    <hr />
+
+    {% block button %}{% endblock %}
+
+  </form>
+  </div>
+</div>
+{% endblock %}

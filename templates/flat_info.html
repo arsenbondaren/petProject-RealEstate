@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Info about flat{% endblock %}
+
+{% block text_center %}<h2>Full information about the flat</h2>{% endblock %}
+
+{% block body %}
+<div class="container">
+    <p><strong>District:</strong> {{flat.district}}</p>
+    <p><strong>Street:</strong> {{flat.street}}</p>
+    <p><strong>Area of the flat:</strong> {{flat.area}} sq.m.</p>
+    <p><strong>Rooms:</strong> {{flat.rooms}}</p>
+    <p><strong>Renovation quality:</strong> {{renovation_dict[flat.renovation]}}</p>
+    <p><strong>Floor:</strong> {{flat.floor}}</p>
+    <p><strong>Market:</strong> {{market_dict[flat.market]}}</p>
+    <p><strong>There is an elevator:</strong> {{binary_dict[flat.elevator]}}</p>
+    <p><strong>There is a balcony:</strong> {{binary_dict[flat.balcony]}}</p>
+    <p><strong>There is a terrace:</strong> {{binary_dict[flat.terrace]}}</p>
+    <p><strong>There is a garden:</strong> {{binary_dict[flat.garden]}}</p>
+    <p><strong>There is a central heating in the building:</strong> {{binary_dict[flat.central_heating]}}</p>
+    <p><strong>Who sells the flat:</strong> {{seller_dict[flat.seller]}}</p>
+    <p><strong>Type of the building is blok:</strong> {{binary_dict[flat.blok]}}</p>
+    <p><strong>There is a parking place to the flat:</strong> {{binary_dict[flat.parking]}}</p>
+    <p><strong>Publication date:</strong> {{flat.publication_date}}</p>
+    <p><strong>PRICE:</strong> {{ flat.price }} PLN</p>
+    <button class="btn btn-danger">Delete</button>
+
+</div>
+{% endblock %}

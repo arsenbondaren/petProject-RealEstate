@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+List of objects
+{% endblock %}
+
+{% block text_center %}<h2>All flats in sale</h2>{% endblock %}
+
+{% block body %}
+{% for flat in flats.items %}
+    <p><strong>Warsaw, {{flat.district}}</strong></p>
+    <p><strong>Price: </strong> {{flat.price}} PLN</p>
+    <p><strong>Area, sq.m.: </strong> {{flat.area}}</p>
+    <p><strong>Rooms: </strong> {{flat.rooms}}</p>
+    <p>Date of adding: {{flat.publication_date}}</p>
+    <a href="/flats/{{ flat.id }}" class="btn btn-info rounded-pill px-3">More info</a>
+    <hr>
+{% endfor %}
+{% for page_num in flats.iter_pages(left_edge=1, left_current=1, right_current=1, right_edge=1) %}
+{% if page_num %}
+    {% if flats.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{ url_for('show_flats', page=page_num) }}">{{ page_num }}</a>
+    {% else %}
+    <a class="btn btn-outline-info mb-4" href="{{ url_for('show_flats', page=page_num) }}">{{ page_num }}</a>
+    {% endif %}
+{% else %}
+...
+{% endif %}
+{% endfor %}
+{% endblock %}
+

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Real Estate Home Page{% endblock %}
+
+{% block text_center %}<h2>Top 5 flats in sale</h2>{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% for flat in flats %}
+    <p><strong>Warsaw, {{flat.district}}</strong></p>
+    <p><strong>Price: </strong> {{flat.price}} PLN</p>
+    <p><strong>Area, sq.m.: </strong> {{flat.area}}</p>
+    <p><strong>Rooms: </strong> {{flat.rooms}}</p>
+    <p>Date of adding: {{flat.publication_date}}</p>
+    <a href="/flats/{{ flat.id }}" class="btn btn-info rounded-pill px-3">More info</a>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}
