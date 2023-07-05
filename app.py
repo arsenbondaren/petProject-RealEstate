@@ -1,8 +1,10 @@
 from flask import Flask, redirect, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-#from catboost import CatBoostRegressor, Pool
+from sklearn.ensemble import AdaBoostRegressor
 import datetime
 from sqlalchemy import func
+import pickle
+#from catboost import CatBoostRegressor, Pool
 
 db = SQLAlchemy()
 app = Flask(__name__)
@@ -116,15 +118,18 @@ def add_flat():
             except:
                 return "Error during adding new flat"
         else:
-            regressor = CatBoostRegressor().load_model("cb_model.cbm")
-            features_names = ['dzielnica', 'powierzchnia', 'liczba pokoi', 'stan wykończenia', 'piętro', 'balkon',
-                              'taras', 'ogródek', 'parking', 'ogrzewanie_miejskie', 'rynek', 'sprzedawca', 'blok', 'winda']
+            regressor = pickle.load(open('adaboost_regressor.pkl', 'rb'))
+            encoder = pickle.load(open('district_encode', 'rb'))
+            district = encoder.transform([district])[0]
+            #regressor = CatBoostRegressor().load_model("cb_model.cbm")
+            cols_x = ['district', 'area', 'rooms', 'renovation', 'floor', 'balcony', 'terrace',
+                      'garden', 'parking', 'central_heating', 'market', 'seller', 'blok', 'elevator']
             values = [district, area, rooms, renovation, floor, balcony, terrace, garden, parking, central_heating, market,
                       seller, blok, elevator]
-            cat_features = [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-            pool = Pool([values], cat_features=cat_features)
-            pred_price = regressor.predict(pool)[0]
-            return render_template('price_page.html', price = str(round(pred_price)))
+            #cat_features = [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+            #pool = Pool([values], cat_features=cat_features)
+            pred_price = regressor.predict([values])
+            return render_template('price_page.html', price = str(round(pred_price[0])))
 
     districts = db.session.execute(db.select(Flat.district)).unique()
     renovation_levels = db.session.execute(db.select(Flat.renovation)).unique()
