@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-from catboost import CatBoostRegressor, Pool
+#from catboost import CatBoostRegressor, Pool
 import datetime
 from sqlalchemy import func
 
@@ -153,5 +153,5 @@ def add_flat():
                                 floor_dict=floor_dict, binary_dict=binary_dict, seller_dict=seller_dict,
                                 market_dict=market_dict, blok=blok,parking=parking)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+#if __name__ == '__main__':
+#    app.run(debug=True, host='0.0.0.0')
