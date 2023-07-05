@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-from sklearn.ensemble import AdaBoostRegressor
+#from sklearn.ensemble import AdaBoostRegressor
 import datetime
 from sqlalchemy import func
 import pickle
