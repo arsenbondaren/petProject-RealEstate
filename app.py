@@ -158,5 +158,5 @@ def add_flat():
                                 floor_dict=floor_dict, binary_dict=binary_dict, seller_dict=seller_dict,
                                 market_dict=market_dict, blok=blok,parking=parking)
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+#if __name__ == '__main__':
+#    app.run(debug=True, host='0.0.0.0')
