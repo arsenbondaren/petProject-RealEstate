@@ -8,7 +8,7 @@ eng_cols = {'cena':'price', 'powierzchnia':'area', 'liczba pokoi':'rooms', 'stan
             'sprzedawca':'seller', 'dzisiaj':'today', 'data_dodania':'publication_date'}
 
 engine = create_engine('sqlite:///instance/test_flat.db', echo=False)
-table_name = 'waw_flats_27_6.csv'
+table_name = 'waw_flats_10_7.csv'
 df = pd.read_csv('datasets/'+table_name, parse_dates=['dzisiaj', 'data_dodania'])
 df = preprocess.preproc_data(df)
 cols_for_db = ['cena', 'powierzchnia', 'liczba pokoi', 'stan wykończenia', 'piętro', 'rynek', 'winda', 'ulica',

@@ -57,4 +57,4 @@ for link in links:
 
 flats_df = pd.DataFrame(flats_list)
 flats_df['dzisiaj'] = today
-flats_df.to_csv(f'waw_flats_{day}_{month}.csv', index=False)
+flats_df.to_csv(f'datasets/waw_flats_{day}_{month}.csv', index=False)
