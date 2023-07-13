@@ -1,10 +1,12 @@
 from flask import Flask, redirect, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 #from sklearn.ensemble import AdaBoostRegressor
+#from sklearn.linear_model import LinearRegression
 import datetime
 from sqlalchemy import func
 import pickle
-#from catboost import CatBoostRegressor, Pool
+from catboost import CatBoostRegressor, Pool
+import pandas as pd
 
 db = SQLAlchemy()
 app = Flask(__name__)
@@ -118,18 +120,23 @@ def add_flat():
             except:
                 return "Error during adding new flat"
         else:
-            regressor = pickle.load(open('adaboost_regressor.pkl', 'rb'))
+            ada_regressor = pickle.load(open('adaboost_regressor.pkl', 'rb'))
             encoder = pickle.load(open('district_encode', 'rb'))
+            lr_model = pickle.load(open('linear_regressor.pkl', 'rb'))
             district = encoder.transform([district])[0]
-            #regressor = CatBoostRegressor().load_model("cb_model.cbm")
+            cb_regressor = CatBoostRegressor().load_model("cb_model.cbm")
             cols_x = ['district', 'area', 'rooms', 'renovation', 'floor', 'balcony', 'terrace',
                       'garden', 'parking', 'central_heating', 'market', 'seller', 'blok', 'elevator']
             values = [district, area, rooms, renovation, floor, balcony, terrace, garden, parking, central_heating, market,
                       seller, blok, elevator]
-            #cat_features = [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-            #pool = Pool([values], cat_features=cat_features)
-            pred_price = regressor.predict([values])
-            return render_template('price_page.html', price = str(round(pred_price[0])))
+            cat_features = [0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+            pool = Pool([values], cat_features=cat_features)
+            ada_preds = ada_regressor.predict([values])
+            cb_preds = cb_regressor.predict(pool)
+            lr_df = pd.DataFrame(data=ada_preds.reshape(-1, 1), columns=['ada_preds'])
+            lr_df['cb_preds'] = cb_preds
+            pred_price = lr_model.predict(lr_df)
+            return render_template('price_page.html', price=str(round(pred_price[0])))
 
     districts = db.session.execute(db.select(Flat.district)).unique()
     renovation_levels = db.session.execute(db.select(Flat.renovation)).unique()
