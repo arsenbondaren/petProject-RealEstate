@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block script %}
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-3.2.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-widgets-3.2.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-tables-3.2.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-gl-3.2.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-mathjax-3.2.1.min.js"
+        crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block title %}Price graph{% endblock %}
+
+{% block body %}
+    <h1>The graph of mean price</h1>
+    {{ the_div|safe }}
+
+    {{ the_script|safe }}
+{% endblock %}

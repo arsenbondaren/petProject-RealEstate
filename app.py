@@ -7,6 +7,8 @@ from sqlalchemy import func
 import pickle
 from catboost import CatBoostRegressor, Pool
 import pandas as pd
+from bokeh.plotting import figure
+from bokeh.embed import components
 
 db = SQLAlchemy()
 app = Flask(__name__)
@@ -39,6 +41,12 @@ class Flat(db.Model):
     parking = db.Column(db.Integer)
     publication_date = db.Column(db.DateTime, default=datetime.datetime.now())
 
+class PriceMetric(db.Model):
+    __table_args__ = {'extend_existing': True}
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    date = db.Column(db.DateTime, nullable=False)
+    price_m2 = db.Column(db.Float, nullable=False)
+
 renovation_dict = {3: 'Do zamieszkania', 2: 'Do wykończenia', 1: 'Do remontu', 0: 'Zapytaj'}
 floor_dict = {0: 'First floor (parter)', 1: 'Last floor', 2: 'Other floors (not first, not last)'}
 market_dict = {1: 'New building', 2: 'Secondary housing market'}
@@ -49,6 +57,36 @@ seller_dict = {1: 'Real-Estate agency', 2: 'Private owner', 3: 'Developer'}
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/graph')
+def graph():
+    dates = []
+    values = []
+    res = db.session.execute(db.select(PriceMetric.date).order_by(PriceMetric.date)).all()
+    for i in res:
+        dates.append(i[0])
+    res = db.session.execute(db.select(PriceMetric.price_m2).order_by(PriceMetric.date)).all()
+    for i in res:
+        values.append(i[0])
+    plot = figure(title="Price graph", x_axis_label='date', y_axis_label='price_m2')
+    plot.line(dates, values, legend_label="Temp.", line_width=2)
+    script, div = components(plot)
+    print(values)
+    return render_template("graph.html", the_div=div, the_script=script)
+
+
+@app.route('/del_graph')
+def del_graph():
+    obj_to_del = db.session.execute(db.select(PriceMetric)).all()
+    #obj_to_del = db.session.execute(db.select(PriceMetric).where(PriceMetric.date == datetime.datetime(2023,8,3,00,00,00,00))).all()[0][0]
+    for i, o in enumerate(obj_to_del):
+        try:
+            db.session.delete(obj_to_del[i][0])
+            db.session.commit()
+        except:
+            return 'Error during delete'
+    return redirect('/')
 
 
 @app.route('/delete', methods=['POST', 'GET'])
