@@ -3,10 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 #from sklearn.ensemble import AdaBoostRegressor
 #from sklearn.linear_model import LinearRegression
 import datetime
+from datetime import timedelta
 from sqlalchemy import func
 import pickle
 from catboost import CatBoostRegressor, Pool
 import pandas as pd
+from bokeh.models import DatetimeTickFormatter
 from bokeh.plotting import figure
 from bokeh.embed import components
 
@@ -69,10 +71,14 @@ def graph():
     res = db.session.execute(db.select(PriceMetric.price_m2).order_by(PriceMetric.date)).all()
     for i in res:
         values.append(i[0])
-    plot = figure(title="Price graph", x_axis_label='date', y_axis_label='price_m2')
+    plot = figure(title="Price graph", sizing_mode='stretch_width', x_range=(dates[0]-timedelta(days=15),dates[-1]+timedelta(days=15)),
+                  x_axis_label='date', y_range=(14000,18000), y_axis_label='price_m2')
+    plot.toolbar.logo = None
+    plot.xaxis[0].formatter = DatetimeTickFormatter(days="%d/%b")
+    plot.circle(dates, values, size=8)
     plot.line(dates, values, legend_label="Temp.", line_width=2)
     script, div = components(plot)
-    print(values)
+    print(dates)
     return render_template("graph.html", the_div=div, the_script=script)
 
 

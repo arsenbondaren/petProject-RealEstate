@@ -125,6 +125,14 @@ districts = {
     'ulrychów': 'wola', 'marymont-potok': 'żoliborz', 'stary żoliborz': 'żoliborz', 'sady żoliborskie': 'żoliborz'
 }
 
+cols_for_db = ['cena', 'powierzchnia', 'liczba pokoi', 'stan wykończenia', 'piętro', 'rynek', 'winda', 'ulica',
+                'dzielnica', 'balkon', 'taras', 'ogródek', 'parking', 'ogrzewanie_miejskie', 'sprzedawca', 'blok',
+                'cena_m', 'dzisiaj', 'data_dodania']
+
+eng_cols = {'cena':'price', 'powierzchnia':'area', 'liczba pokoi':'rooms', 'stan wykończenia':'renovation',
+            'piętro':'floor', 'rynek':'market', 'winda':'elevator', 'ulica':'street', 'dzielnica':'district',
+            'balkon':'balcony', 'taras':'terrace', 'ogródek':'garden', 'ogrzewanie_miejskie':'central_heating',
+            'sprzedawca':'seller', 'dzisiaj':'today', 'data_dodania':'publication_date'}
 
 def waw_districts(value):
     try:
@@ -174,4 +182,6 @@ def preproc_data(flats_df):
     flats_df['dzielnica'] = flats_df['dzielnica'].apply(lambda x: x if x in main_districts else None)
     flats_df['cena_m'] = flats_df['cena'] / flats_df['powierzchnia']
     flats_df['data_dodania'] = pd.to_datetime(flats_df['data_dodania'])
+    flats_df = flats_df.loc[:, cols_for_db]
+    flats_df.rename(columns=eng_cols, inplace=True)
     return flats_df
