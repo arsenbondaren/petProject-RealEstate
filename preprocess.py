@@ -153,13 +153,13 @@ def preproc_data(flats_df):
     if flag:
         flats_df.columns = new_cols
     flats_df.rename(lambda x: x.lower(), axis=1, inplace=True)
-    flats_df['ulica'] = flats_df['adres'].apply(lambda x: x.split(',')[2].strip())
-    flats_df['dzielnica'] = flats_df['adres'].apply(lambda x: x.split(',')[1].strip())
-    mask = flats_df['ulica'] == 'Warszawa'
-    flats_df.loc[mask, 'dzielnica'] = flats_df['adres'].apply(lambda x: x.split(',')[0].strip())
-    mask2 = flats_df['adres'].str.startswith(('al.', 'ul.'))
-    flats_df.loc[mask2, 'ulica'] = flats_df.loc[mask2, 'dzielnica']
-    flats_df['ulica'] = flats_df['ulica'].apply(lambda x: 'unknown' if x == 'Warszawa' else x)
+    flats_df['ulica'] = flats_df['adres'].apply(lambda x: x.split(',')[0].strip())
+    flats_df['dzielnica'] = flats_df['adres'].apply(lambda x: x.split(',')[-3].strip() if len(x.split(','))>2 else None)
+    #mask = flats_df['ulica'] == 'Warszawa'
+    #flats_df.loc[mask, 'dzielnica'] = flats_df['adres'].apply(lambda x: x.split(',')[0].strip())
+    #mask2 = flats_df['adres'].str.startswith(('al.', 'ul.'))
+    #flats_df.loc[mask2, 'ulica'] = flats_df.loc[mask2, 'dzielnica']
+    #flats_df['ulica'] = flats_df['ulica'].apply(lambda x: 'unknown' if x == 'Warszawa' else x)
     flats_df['ulica'] = flats_df['ulica'].str.lower()
     flats_df['dzielnica'] = flats_df['dzielnica'].str.lower()
     flats_df['ulica'] = flats_df['ulica'].apply(cut_numbers)

@@ -77,6 +77,14 @@ for link in links:
 flats_df = pd.DataFrame(flats_list)
 flats_df['dzisiaj'] = today
 table_name = f'waw_flats_{day}_{month}.csv'
-cb_df = load_table.final_tables(flats_df, table_name=table_name)
-load_table.learn_catboost(cb_df)
+try:
+    cb_df = load_table.final_tables(flats_df, table_name=table_name)
+except Exception as e:
+    print(e)
+    flats_df.to_csv(f'datasets/waw_flats_{day}_{month}.csv', index=False)
+    print('Error during preprocessing df')
+try:
+    load_table.learn_catboost(cb_df)
+except Exception as e:
+    print(e)
 #flats_df.to_csv(f'datasets/waw_flats_{day}_{month}.csv', index=False)
