@@ -1,16 +1,19 @@
 from flask import Flask, redirect, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
-#from sklearn.ensemble import AdaBoostRegressor
-#from sklearn.linear_model import LinearRegression
+import sklearn
+from sklearn.ensemble import AdaBoostRegressor
+from sklearn.linear_model import LinearRegression
 import datetime
 from datetime import timedelta
 from sqlalchemy import func
 import pickle
-from catboost import CatBoostRegressor, Pool
-import pandas as pd
+# from catboost import CatBoostRegressor, Pool
+#import pandas as pd
 from bokeh.models import DatetimeTickFormatter
 from bokeh.plotting import figure
 from bokeh.embed import components
+from pathlib import Path
+THIS_FOLDER = Path(__file__).parent.resolve()
 
 db = SQLAlchemy()
 app = Flask(__name__)
@@ -164,11 +167,11 @@ def add_flat():
             except:
                 return "Error during adding new flat"
         else:
-            ada_regressor = pickle.load(open('adaboost_regressor.pkl', 'rb'))
-            encoder = pickle.load(open('district_encode', 'rb'))
-            lr_model = pickle.load(open('linear_regressor.pkl', 'rb'))
+            ada_regressor = pickle.load(open(THIS_FOLDER / 'adaboost_regressor.pkl', 'rb'))
+            encoder = pickle.load(open(THIS_FOLDER / 'district_encode', 'rb'))
+            lr_model = pickle.load(open(THIS_FOLDER / 'linear_regressor.pkl', 'rb'))
             district = encoder.transform([district])[0]
-            cb_regressor = CatBoostRegressor().load_model("cb_model.cbm")
+            cb_regressor = CatBoostRegressor().load_model(f"{THIS_FOLDER}/cb_model.cbm")
             cols_x = ['district', 'area', 'rooms', 'renovation', 'floor', 'balcony', 'terrace',
                       'garden', 'parking', 'central_heating', 'market', 'seller', 'blok', 'elevator']
             values = [district, area, rooms, renovation, floor, balcony, terrace, garden, parking, central_heating, market,
