@@ -7,8 +7,8 @@ import datetime
 from datetime import timedelta
 from sqlalchemy import func
 import pickle
-# from catboost import CatBoostRegressor, Pool
-#import pandas as pd
+from catboost import CatBoostRegressor, Pool
+import pandas as pd
 from bokeh.models import DatetimeTickFormatter
 from bokeh.plotting import figure
 from bokeh.embed import components
