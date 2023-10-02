@@ -17,3 +17,7 @@ con = sqlite3.connect("instance/test_flat.db")
 #con.commit()
 res = con.execute("SELECT * FROM price_metric ORDER BY id DESC").fetchone()
 print(res[0] == 4)
+from pathlib import Path
+THIS_FOLDER = Path(__file__).parent.resolve()
+my_file = THIS_FOLDER / "myfile.txt"
+print(my_file)

@@ -71,3 +71,9 @@ def learn_catboost(df):
     cb_regressor.save_model('cb_model.cbm')
     print("The catboost's weights successfully updated")
     return None
+
+if __name__ == '__main__':
+    print('Manually load tables')
+    table_name = 'waw_flats_14_9.csv'
+    df = pd.read_csv('datasets/' + table_name, parse_dates=['dzisiaj', 'data_dodania'])
+    final_tables(df, table_name)

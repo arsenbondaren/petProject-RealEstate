@@ -3,3 +3,6 @@ catboost == 1.2
 Flask == 2.3.2
 Flask-SQLAlchemy == 3.0.5
 scikit-learn == 1.2.2
+bokeh == 3.2.1
+pandas == 2.0.3
+sklearn == 0.0.post5
