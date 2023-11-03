@@ -71,6 +71,7 @@ for link in links:
     for i in add_frame[::2]:
         flat_info[i.text] = i.find_next_sibling('div').text
 
+    flat_info['link'] = link[0]
     flat_info['data_dodania'] = link[1]
     flats_list.append(flat_info)
 

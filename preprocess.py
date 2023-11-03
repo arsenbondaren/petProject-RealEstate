@@ -127,7 +127,7 @@ districts = {
 
 cols_for_db = ['cena', 'powierzchnia', 'liczba pokoi', 'stan wykończenia', 'piętro', 'rynek', 'winda', 'ulica',
                 'dzielnica', 'balkon', 'taras', 'ogródek', 'parking', 'ogrzewanie_miejskie', 'sprzedawca', 'blok',
-                'cena_m', 'dzisiaj', 'data_dodania']
+                'cena_m', 'dzisiaj', 'link', 'data_dodania']
 
 eng_cols = {'cena':'price', 'powierzchnia':'area', 'liczba pokoi':'rooms', 'stan wykończenia':'renovation',
             'piętro':'floor', 'rynek':'market', 'winda':'elevator', 'ulica':'street', 'dzielnica':'district',
@@ -184,4 +184,5 @@ def preproc_data(flats_df):
     flats_df['data_dodania'] = pd.to_datetime(flats_df['data_dodania'])
     flats_df = flats_df.loc[:, cols_for_db]
     flats_df.rename(columns=eng_cols, inplace=True)
+    flats_df = flats_df.dropna().reset_index(drop=True)
     return flats_df

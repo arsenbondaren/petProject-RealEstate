@@ -170,6 +170,7 @@ def add_flat():
             ada_regressor = pickle.load(open(THIS_FOLDER / 'adaboost_regressor.pkl', 'rb'))
             encoder = pickle.load(open(THIS_FOLDER / 'district_encode', 'rb'))
             lr_model = pickle.load(open(THIS_FOLDER / 'linear_regressor.pkl', 'rb'))
+            neigh = pickle.load(open(THIS_FOLDER / 'kneighbors.pkl', 'rb'))
             district = encoder.transform([district])[0]
             cb_regressor = CatBoostRegressor().load_model(f"{THIS_FOLDER}/cb_model.cbm")
             cols_x = ['district', 'area', 'rooms', 'renovation', 'floor', 'balcony', 'terrace',
@@ -183,7 +184,12 @@ def add_flat():
             lr_df = pd.DataFrame(data=ada_preds.reshape(-1, 1), columns=['ada_preds'])
             lr_df['cb_preds'] = cb_preds
             pred_price = lr_model.predict(lr_df)
-            return render_template('price_page.html', price=str(round(pred_price[0])))
+            values = [int(x) for x in values]
+            k_neigh = neigh.kneighbors([values], return_distance=False)[0]
+            k_neigh = [int(x) for x in k_neigh]
+            k_neigh = db.session.execute(db.select(Flat).where(Flat.id.in_(k_neigh))).fetchall()
+            k_neigh = [x[0] for x in k_neigh]
+            return render_template('price_page.html', price=str(round(pred_price[0])), flats=k_neigh)
 
     districts = db.session.execute(db.select(Flat.district)).unique()
     renovation_levels = db.session.execute(db.select(Flat.renovation)).unique()

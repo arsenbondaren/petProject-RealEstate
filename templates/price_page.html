@@ -9,7 +9,20 @@
 <div class="container">
 <h4>Approximate price for flat with your needs is: {{price}} PLN</h4>
 
-This is mean value above. It's possible to find flat with price 100-150 thousand PLN less/more,
-depending on the situation.
+This is mean value above. It's possible to find flat with price 100-150 thousand PLN less/more, depending on the situation.
+</div>
+
+<div class="container">
+    <h4>There are flats below suitable to your query</h4>
+    <hr>
+    {% for flat in flats %}
+    <p><strong>Warsaw, {{flat.district}}</strong></p>
+    <p><strong>Price: </strong> {{flat.price}} PLN</p>
+    <p><strong>Area, sq.m.: </strong> {{flat.area}}</p>
+    <p><strong>Rooms: </strong> {{flat.rooms}}</p>
+    <p>Date of adding: {{flat.publication_date}}</p>
+    <a href="/flats/{{ flat.id }}" class="btn btn-info rounded-pill px-3">More info</a>
+    <hr>
+    {% endfor %}
 </div>
 {% endblock %}
