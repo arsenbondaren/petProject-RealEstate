@@ -4,6 +4,7 @@ import json
 import pandas as pd
 import datetime
 import load_table
+import pickle
 
 today = datetime.date.today()
 day = str(today.day)
@@ -56,25 +57,45 @@ for link in links:
         print('Occured error during find frame in line 40')
         print(link[0])
         continue
-    if len(frame) != 20:
+    if len(frame) != 10:
         continue
-    for i in frame[::2]:
-        flat_info[i.text] = i.find_next_sibling('div').text
+    for i in range(len(frame)):
+        try:
+            attr = frame[i].find_all('div', attrs={'class': 'css-rqy0wg enb64yk3'})[0].text
+        except:
+            continue
+        try:
+            value = frame[i].find_all('div', attrs={'class': 'css-1wi2w6s enb64yk5'})[0].text
+        except:
+            value = 'Zapytaj'
+        flat_info[attr] = value
 
     try:
         add_frame = soup.find('div', attrs={'class': 'css-1utkgzv e10umaf20'}).find_all('div',
                                                                                         attrs={'class': 'enb64yk1'})
     except:
         continue
-    if len(add_frame) != 24:
+
+    if len(add_frame) != 12:
         continue
-    for i in add_frame[::2]:
-        flat_info[i.text] = i.find_next_sibling('div').text
+
+    for i in range(len(add_frame)):
+        try:
+            attr = add_frame[i].find_all('div', attrs={'class': 'css-rqy0wg enb64yk3'})[0].text
+        except:
+            continue
+        try:
+            value = add_frame[i].find_all('div', attrs={'class': 'css-1wi2w6s enb64yk5'})[0].text
+        except:
+            value = 'Zapytaj'
+        flat_info[attr] = value
 
     flat_info['link'] = link[0]
     flat_info['data_dodania'] = link[1]
     flats_list.append(flat_info)
 
+filename = 'flats_list'
+pickle.dump(flats_list, open(filename, 'wb'))
 flats_df = pd.DataFrame(flats_list)
 flats_df['dzisiaj'] = today
 table_name = f'waw_flats_{day}_{month}.csv'
